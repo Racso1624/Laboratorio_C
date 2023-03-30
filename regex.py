@@ -1,6 +1,7 @@
 # Oscar Fernando López Barrios
 # Carné 20679
 
+# Clase de Regex
 class Regex (object):
 
     # Se inicia la funcion
