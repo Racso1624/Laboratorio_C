@@ -3,21 +3,28 @@
 
 class Regex (object):
 
+    # Se inicia la funcion
     def __init__(self, regex):
         self.expression = regex
         self.operators = []
         self.errorValidation()
         self.postfix_expression = self.postfixConversion() 
 
+    # Se realiza para brindar el resultado de la expresion postfix
     def __repr__(self) -> str:
         return self.postfix_expression
     
+    # Se ven la validacion de los errores
     def errorValidation(self):
         expression = self.expression
         if(expression.count('(') != expression.count(')')):
             raise Exception("ERROR: Cantidad de Parentesis Incorrecta")
         if(expression[0] in ".|*+?"):
             raise Exception("ERROR: No se puede iniciar con simbolo de operacion")
+        
+        for i in range(len(expression)):
+            if(expression[i] in ".|*+?" and expression[i + 1] in ".|*+?"):
+                raise Exception("ERROR: No se pueden tener dos operadores juntos en una expresion")
 
     # Funcion para conocer la precedencia
     def operatorPrecedence(self, character):
