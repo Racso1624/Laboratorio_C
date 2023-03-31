@@ -7,4 +7,4 @@ class File(object):
     def read(self):
         with open(self.filename, "r") as file:
             for line in file:
-                print(line)
+                pass
