@@ -10,7 +10,7 @@ class SyntaxTree(object):
     def __init__(self, regex):
         self.regex = regex
         # Se agrega la raiz al final de la expresion
-        self.postfix =  Regex(self.regex).postfix_expression + "#."
+        self.postfix =  Regex(self.regex).postfix_expression.append('#.')
         self.node_list = []
         self.tree_root = None
         self.buildTree()
