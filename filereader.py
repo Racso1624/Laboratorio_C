@@ -10,5 +10,7 @@ class File(object):
                 if('let' in line):
                     line = line.replace('let ', '')
                     line = line.replace(" ", "")
-                    line_separated = line.split('=')
-                    print(line_separated)
+                    definition, value = line.split('=')
+                    if(value[0] == '['):
+                        for i in value:
+                            pass

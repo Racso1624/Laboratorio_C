@@ -45,8 +45,8 @@ class Regex (object):
         # Se crean la lista de operadores y caracteres
         # Ademas se crea la expresion
         operators_list = ['|', '?', '*', '+']
-        characters_queue = ''
-        postfix_expression = ''
+        characters_queue = []
+        postfix_expression = []
 
         # Se itera sobre la expresion para crear la cola de caracteres a utilizar para el algoritmo
         # Ademas se agregan los '.' para la concatenacion que se realizara
@@ -55,12 +55,12 @@ class Regex (object):
 
             if((i + 1) < len(self.expression)):
                 next_char = self.expression[i + 1]
-                characters_queue += char
+                characters_queue.append(char)
 
                 if((char != '(') and (next_char != ')') and (next_char not in operators_list) and (char != '|')):
-                    characters_queue += '.'
+                    characters_queue.append('.')
         
-        characters_queue += self.expression[len(self.expression) - 1]
+        characters_queue.append(self.expression[len(self.expression) - 1])
 
         # Se itera en los caracteres para obtener la precedencia
         for char in characters_queue:
@@ -69,7 +69,7 @@ class Regex (object):
                 self.operators.append(char)
             elif(char == ')'):
                 while(self.operators[-1] != '('):
-                    postfix_expression += self.operators.pop()
+                    postfix_expression.append(self.operators.pop())
                 self.operators.pop()
             else:
                 while(len(self.operators) > 0):
@@ -78,12 +78,13 @@ class Regex (object):
                     char_precedence = self.operatorPrecedence(char)
 
                     if(last_char_precedence >= char_precedence):
-                        postfix_expression += self.operators.pop()
+                        postfix_expression.append(self.operators.pop())
                     else:
                         break
                 
                 self.operators.append(char)
 
         while(len(self.operators) > 0):
-            postfix_expression += self.operators.pop()
+            postfix_expression.append(self.operators.pop())
+        
         return postfix_expression
