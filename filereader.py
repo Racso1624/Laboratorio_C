@@ -12,12 +12,11 @@ class File(object):
                     line = line.replace('let ', '')
                     line = line.replace(" ", "")
                     definition, value = line.split('=')
+                    value_definition = []
                     print(value)
                     if(value[0] == '['):
+                        value_definition.append('(')
                         if(value[1] == "'"):
-                            # HACER LA CUENTA DE LOS -
-                            # SI EXISTEN - SE REALIZA UNA ITERACION EN LOS CHARSET
-                            # SI NO, SOLO SE TOMA EN CUENTA LOS VALORES QUE SE ENCUENTRAN DENTRO
                             separator_counter = value.count('-')
                             if(separator_counter != 0):
                                 index_counter = 1
@@ -26,10 +25,46 @@ class File(object):
                                 first_apostrophe = None
                                 second_apostrophe = None
                                 while(separator_counter != 0):
-                                    if(value[index_counter] == "'" and first_apostrophe == None):
+                                    if(value[index_counter] == "'" and not first_apostrophe):
                                         first_apostrophe = index_counter
-                                    else:
+                                    elif(value[index_counter] == "'" and first_apostrophe):
                                         second_apostrophe = index_counter
-                                
+
+                                    if(first_apostrophe and second_apostrophe and first_value == ""):
+                                        first_value = value[first_apostrophe + 1]
+                                        first_apostrophe = None
+                                        second_apostrophe = None
+                                    elif(first_apostrophe and second_apostrophe and first_value != ""):
+                                        second_value = value[first_apostrophe + 1]
+                                        first_apostrophe = None
+                                        second_apostrophe = None
+                                        separator_counter -= 1
+                                    
+                                    if(first_value != "" and second_value != ""):
+                                        first_ascii = ord(first_value)
+                                        second_ascii = ord(second_value)
+                                        first_value = ""
+                                        second_value = ""
+                                        if(len(value_definition) > 2):
+                                            value_definition.append('|')
+                                        for i in range(first_ascii, second_ascii):
+                                            value_definition.append(i)
+                                            value_definition.append('|')
+                                        value_definition.append(second_ascii)
+
+                                    index_counter += 1
+                            else:
+                                index_counter = 1
+                                first_value = ""
+                                first_apostrophe = None
+                                second_apostrophe = None
+                                while(value[index_counter] != ']'):
+                                    if(value[index_counter] == "'" and not first_apostrophe):
+                                        first_apostrophe = index_counter
+                                    elif(value[index_counter] == "'" and first_apostrophe):
+                                        second_apostrophe = index_counter
                         elif(value[1] == '"'):
                             pass
+
+                        value_definition.append(')') 
+                        print(value_definition)    
