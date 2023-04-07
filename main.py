@@ -4,5 +4,5 @@
 from filereader import *
 from regex import *
 
-filename = "./tests/slr-1.yal"
+filename = "./tests/slr-4.yal"
 File(filename)
