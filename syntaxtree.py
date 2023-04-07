@@ -2,12 +2,13 @@
 # Carné 20679
 
 from regex import *
+from graphviz import Digraph
 
 # Clase Syntax Tree
 class SyntaxTree(object):
 
     # Se inicia con la expresion regular
-    def __init__(self, regex):
+    def __init__(self, regex, name):
         self.regex = regex
         # Se agrega la raiz al final de la expresion
         self.postfix =  Regex(self.regex).postfix_expression
@@ -15,8 +16,9 @@ class SyntaxTree(object):
         self.postfix.append(".")
         self.node_list = []
         self.tree_root = None
+        self.tree_name = name
         self.buildTree()
-        self.printTree()
+        self.graphTree()
 
     # Se crea la clase para realiza el arbol
     def buildTree(self):
@@ -65,8 +67,22 @@ class SyntaxTree(object):
                 print("Derecho")
                 print(node.right_child.character)
     
+    def graphNode(self, node, graph):
+        graph.node(str(id(node)), str(node.character))
+        if(node.left_child):
+            graph.edge(str(id(node)), str(id(node.left_child)))
+            self.graphNode(node.left_child, graph)
+        if(node.right_child):
+            graph.edge(str(id(node)), str(id(node.right_child)))
+            self.graphNode(node.right_child, graph)
+
     def graphTree(self):
-        pass
+        description = "Syntax Tree"
+        graph = Digraph()
+        graph.attr(labelloc="t", label=description)
+        self.graphNode(self.tree_root, graph)
+        graph.render(f"./images/{self.tree_name}", format="png", view=True)
+
 
 
 # Se crea la clase nodo

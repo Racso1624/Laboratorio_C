@@ -7,4 +7,4 @@ from syntaxtree import *
 filename = "./tests/slr-4.yal"
 file_reader = File(filename)
 regex = file_reader.regex
-SyntaxTree(regex)
+SyntaxTree(regex, "Prueba 1")
