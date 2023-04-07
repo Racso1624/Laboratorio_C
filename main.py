@@ -4,7 +4,7 @@
 from filereader import *
 from syntaxtree import *
 
-filename = "./tests/slr-1.yal"
+filename = "./tests/slr-4.yal"
 file_reader = File(filename)
 regex = file_reader.regex
-SyntaxTree(regex, "Yalex 1")
+SyntaxTree(regex, "Yalex 4")
