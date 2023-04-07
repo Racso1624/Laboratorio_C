@@ -79,11 +79,37 @@ class File(object):
 
                         value_definition.append(')') 
                     else:
-                        apostrophe_count = value.count("'")
-                        if(apostrophe_count == 0):
-                            definitions = list(self.regular_expressions.keys())
-                            for i in definitions:
-                                if(i in value):
-                                    print(self.regular_expressions[i])
+                        first_apostrophe = None
+                        value_list = []
+                        new_string = ""
+                        for i in range(len(value) - 1):
+                            if(value[i] not in ".|*+?()" and i != "'"):
+                                new_string += value[i]
+                            elif(value[i] == "'" and not first_apostrophe):
+                                first_apostrophe = i
+                                if(new_string != ""):
+                                    value_list.append(new_string)
+                                    new_string = ""
+                            elif(value[i] == "'" and first_apostrophe):
+                                value_list.append(value[(first_apostrophe + 1):i])
+                                first_apostrophe = None
+                            else:
+                                if(new_string != ""):
+                                    value_list.append(new_string)
+                                    new_string = ""
+                                
+                                value_list.append(value[i])
+
+
+
+                        dictionary_keys = list(self.regular_expressions.keys())
+                        for i in dictionary_keys:
+                            if(i in value_list):
+                                element_counter = value_list.count(i)
+                                while(element_counter != 0):
+                                    index = value_list.index(i)
+                                    value_list[index:(index + 1)] = self.regular_expressions[i]
+                                    element_counter -= 1
+                        print(value_list)
 
                     self.regular_expressions[definition] = value_definition 
