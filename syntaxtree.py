@@ -28,6 +28,7 @@ class SyntaxTree(object):
         position_counter = 1
 
         # Se itera en cada caracter de la expresion
+        print("PostFix del Arbol")
         print(self.postfix)
         for character in self.postfix:
             # Si es unario solo se crea el hijo a la izquierda

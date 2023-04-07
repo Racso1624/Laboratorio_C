@@ -24,12 +24,14 @@ class File(object):
 
                 # Si la linea tiene un let
                 if('let' in line):
-
                     # Se reemplazan los espacios vacios
                     line = line.replace('let ', '')
                     line = line.replace(" ", "")
                     # Se divide entre la definicion y el valor de esta
                     definition, value = line.split('=')
+                    print("Linea de Let")
+                    print(definition)
+                    print(value)
                     # Se crea la lista con la definicion final
                     value_definition = []
                     # Si el primer elemento del valor es una llave significa que es un charset
@@ -131,6 +133,9 @@ class File(object):
                                 
                         # Para la definicion nueva se agrega con el parentesis de cierre al final
                         value_definition.append(')') 
+                        print("Valor final")
+                        print(value_definition)
+                        print("")
                         # Se guarda la definicion con el valor final de esta
                         self.regular_expressions[definition] = value_definition 
                     # Si no es un charset se revisa
@@ -200,13 +205,19 @@ class File(object):
                         value_list[0:0] = '('
                         value_list[len(value_list):len(value_list)] = ')'
 
+                        print("Valor final")
+                        print(value_list)
+                        print("")
                         # Se guarda la definicion con su valor en el diccionario
                         self.regular_expressions[definition] = value_list
                 # Si se encuentra la linea de rule tokens se pone como verdadera la variables
                 elif('rule tokens' in line):
                     tokens = True
                 # Si esta verdadera la variable de rule tokens
-                elif(tokens):    
+                elif(tokens):
+                    print("Regex Final")
+                    print(final_regex)
+                    print("")
                     # Se toman las llaves del diccionario
                     dictionary_keys = list(self.regular_expressions.keys())
                     # Si la linea tiene un or se agrega a la expresion final
