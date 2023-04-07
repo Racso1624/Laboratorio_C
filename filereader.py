@@ -2,6 +2,7 @@ class File(object):
     def __init__(self, filename):
         self.filename = filename
         self.regular_expressions = {}
+        self.regex = []
         self.read()
 
     def read(self):
@@ -14,8 +15,6 @@ class File(object):
                     line = line.replace(" ", "")
                     definition, value = line.split('=')
                     value_definition = []
-                    # print(definition)
-                    # print(value)
                     if(value[0] == '['):
                         value_definition.append('(')
                         if(value[1] == "'"):
@@ -92,7 +91,6 @@ class File(object):
                                 
 
                         value_definition.append(')') 
-                        # print(value_definition)
                         self.regular_expressions[definition] = value_definition 
                     else:
                         first_apostrophe = None
@@ -139,36 +137,39 @@ class File(object):
                             value_list[final_bracket] = ')'
                         value_list[0:0] = '('
                         value_list[len(value_list):len(value_list)] = ')'
-                        # print(value_list)
                         self.regular_expressions[definition] = value_list
                 
                 elif('rule tokens' in line):
                     tokens = True
                 
-                elif(tokens):
-                    print(line)
-                    definition_matched = False
-                    line_list = line.split(" ")
-                    index_counter = 0
-                    while(not definition_matched):
-                        if(line_list[index_counter] != '' and line_list[index_counter] != '|'):
-                            definition_matched = line_list[index_counter]
-                        elif(line_list[index_counter] == '|'):
-                            final_regex.append('|')
-                        index_counter += 1
-                    
+                elif(tokens):    
                     dictionary_keys = list(self.regular_expressions.keys())
-                    if(definition_matched in dictionary_keys):
-                        final_regex[len(final_regex):len(final_regex)] = self.regular_expressions[definition_matched]
-                    else:
+                    if('|' in line):
+                        final_regex.append('|')
+                    if("'" in line):
                         first_apostrophe = None
-                        for i in range(len(definition_matched)):
-                            if(definition_matched[i] == "'" and first_apostrophe == None):
+                        for i in range(len(line)):
+                            if(line[i] == "'" and first_apostrophe == None):
                                 first_apostrophe = i
-                            elif(definition_matched[i] == "'" and first_apostrophe != None):
-                                apostrophes_value = definition_matched[(first_apostrophe + 1):i]
+                            elif(line[i] == "'" and first_apostrophe != None):
+                                apostrophes_value = line[(first_apostrophe + 1):i]
                                 value_ascii = ord(apostrophes_value)
                                 final_regex.append(value_ascii)
                                 first_apostrophe = None
+                    elif('"' in line):
+                        first_apostrophe = None
+                        for i in range(len(line)):
+                            if(line[i] == '"' and first_apostrophe == None):
+                                first_apostrophe = i
+                            elif(line[i] == '"' and first_apostrophe != None):
+                                apostrophes_value = line[(first_apostrophe + 1):i]
+                                final_regex.append(apostrophes_value)
+                                first_apostrophe = None
+                    else:
+                        for i in dictionary_keys:
+                            if i in line:
+                                final_regex[len(final_regex):len(final_regex)] = self.regular_expressions[i]
 
-        print(final_regex)
+                        
+
+        self.regex = final_regex
