@@ -63,8 +63,27 @@ class File(object):
                                         first_apostrophe = index_counter
                                     elif(value[index_counter] == "'" and first_apostrophe):
                                         second_apostrophe = index_counter
+                                    
+                                    if(first_apostrophe and second_apostrophe):
+                                        first_value = value[(first_apostrophe + 1):second_apostrophe]
+                                        first_apostrophe = None
+                                        second_apostrophe = None
+                                        if(first_value == ''):
+                                            first_value = ' '
+                                        value_definition.append(first_value)
+
+                                    index_counter += 1
+
                         elif(value[1] == '"'):
                             pass
 
                         value_definition.append(')') 
-                        print(value_definition)    
+                    else:
+                        apostrophe_count = value.count("'")
+                        if(apostrophe_count == 0):
+                            definitions = list(self.regular_expressions.keys())
+                            for i in definitions:
+                                if(i in value):
+                                    print(self.regular_expressions[i])
+
+                    self.regular_expressions[definition] = value_definition 
