@@ -99,3 +99,8 @@ class Node(object):
         # Para cada nodo se guardan sus hijos
         self.left_child = None
         self.right_child = None
+        self.asciiChecker()
+    
+    def asciiChecker(self):
+        if(isinstance(self.character, int)):
+            self.character = chr(self.character)
