@@ -13,6 +13,7 @@ class File(object):
                     line = line.replace(" ", "")
                     definition, value = line.split('=')
                     value_definition = []
+                    print(definition)
                     print(value)
                     if(value[0] == '['):
                         value_definition.append('(')
@@ -75,9 +76,22 @@ class File(object):
                                     index_counter += 1
 
                         elif(value[1] == '"'):
-                            pass
+                            index_counter = 2
+                            while(value[index_counter] != '"'):
+                                if(value[index_counter] == "\\"):
+                                    value_definition.append(value[index_counter:(index_counter + 2)])
+                                    index_counter += 2
+                                else:
+                                    ascii_value = ord(value[index_counter])
+                                    value_definition.append(ascii_value)
+                                    index_counter += 1
+
+                                if(value[index_counter] != '"'):
+                                    value_definition.append('|')
+                                
 
                         value_definition.append(')') 
+                        print(value_definition)
                         self.regular_expressions[definition] = value_definition 
                     else:
                         first_apostrophe = None
@@ -122,7 +136,7 @@ class File(object):
                             value_list[initial_bracket] = '('
                             final_bracket = value_list.index("]")
                             value_list[final_bracket] = ')'
-                        print(value_list)
                         value_list[0:0] = '('
                         value_list[len(value_list):len(value_list)] = ')'
+                        print(value_list)
                         self.regular_expressions[definition] = value_list
