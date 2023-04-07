@@ -67,23 +67,33 @@ class SyntaxTree(object):
                 print("Derecho")
                 print(node.right_child.character)
     
+    # Funcion para graficar cada nodo
     def graphNode(self, node, graph):
+        # Se crea el nodo con un id y su caracter
         graph.node(str(id(node)), str(node.character))
+        # Si tiene el izquierdo
         if(node.left_child):
+            # Se conectan los nodos
             graph.edge(str(id(node)), str(id(node.left_child)))
+            # Se grafica el nodo izquierdo con la misma funcion
             self.graphNode(node.left_child, graph)
+        # Si tiene el derecho
         if(node.right_child):
+            # Se conectan los nodos
             graph.edge(str(id(node)), str(id(node.right_child)))
+            # Se grafica el nodo derecho con la misma funcion
             self.graphNode(node.right_child, graph)
-
+    
+    # Funcion para graficar el arbol
     def graphTree(self):
+        # Se crea la descripcion y el grafo
         description = "Syntax Tree"
         graph = Digraph()
         graph.attr(labelloc="t", label=description)
+        # Se utiliza la funcion desde la raiz del arbol
         self.graphNode(self.tree_root, graph)
+        # Se renderiza
         graph.render(f"./images/{self.tree_name}", format="png", view=True)
-
-
 
 # Se crea la clase nodo
 class Node(object):
@@ -101,6 +111,9 @@ class Node(object):
         self.right_child = None
         self.asciiChecker()
     
+    # Funcion para cambiar de ascii
     def asciiChecker(self):
+        # Si el valor del caracter es entero
         if(isinstance(self.character, int)):
+            # Se cambia el caracter de su valor ascii a caracter
             self.character = chr(self.character)
