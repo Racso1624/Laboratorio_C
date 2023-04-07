@@ -10,10 +10,13 @@ class SyntaxTree(object):
     def __init__(self, regex):
         self.regex = regex
         # Se agrega la raiz al final de la expresion
-        self.postfix =  Regex(self.regex).postfix_expression.append('#.')
+        self.postfix =  Regex(self.regex).postfix_expression
+        self.postfix.append("#")
+        self.postfix.append(".")
         self.node_list = []
         self.tree_root = None
         self.buildTree()
+        self.printTree()
 
     # Se crea la clase para realiza el arbol
     def buildTree(self):
@@ -23,15 +26,16 @@ class SyntaxTree(object):
         position_counter = 1
 
         # Se itera en cada caracter de la expresion
+        print(self.postfix)
         for character in self.postfix:
             # Si es unario solo se crea el hijo a la izquierda
-            if(character in "+*?"):
+            if(isinstance(character, str) and character in "+*?"):
                 new_node = Node(character)
                 new_node.left_child = node_stack.pop()
                 node_stack.append(new_node)
                 self.node_list.append(new_node)
             # Si es binario se crean los hijos de izquierda y derecha
-            elif(character in ".|"):
+            elif(isinstance(character, str) and character in ".|"):
                 new_node = Node(character)
                 new_node.right_child = node_stack.pop()
                 new_node.left_child = node_stack.pop()

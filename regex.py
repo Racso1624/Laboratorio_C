@@ -23,9 +23,11 @@ class Regex (object):
         if(expression[0] in ".|*+?"):
             raise Exception("ERROR: No se puede iniciar con simbolo de operacion")
         
-        for i in range(len(expression)):
-            if(expression[i] in ".|*+?" and expression[i + 1] in ".|*+?"):
-                raise Exception("ERROR: No se pueden tener dos operadores juntos en una expresion")
+        # for i in range(len(expression)):
+        #     if(isinstance(expression[i], str)):
+        #         print(type(expression[i]))
+        #         if(expression[i] in ".|*+?" and expression[i + 1] in ".|*+?"):
+        #             raise Exception("ERROR: No se pueden tener dos operadores juntos en una expresion")
 
     # Funcion para conocer la precedencia
     def operatorPrecedence(self, character):
@@ -86,5 +88,4 @@ class Regex (object):
 
         while(len(self.operators) > 0):
             postfix_expression.append(self.operators.pop())
-        
         return postfix_expression

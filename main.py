@@ -2,7 +2,9 @@
 # Carné 20679
 
 from filereader import *
-from regex import *
+from syntaxtree import *
 
 filename = "./tests/slr-4.yal"
-File(filename)
+file_reader = File(filename)
+regex = file_reader.regex
+SyntaxTree(regex)
