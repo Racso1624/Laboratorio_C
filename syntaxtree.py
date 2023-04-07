@@ -64,6 +64,9 @@ class SyntaxTree(object):
             if(node.right_child):
                 print("Derecho")
                 print(node.right_child.character)
+    
+    def graphTree(self):
+        pass
 
 
 # Se crea la clase nodo
