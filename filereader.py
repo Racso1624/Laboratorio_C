@@ -112,7 +112,17 @@ class File(object):
                                     index = value_list.index(i)
                                     value_list[index:(index + 1)] = self.regular_expressions[i]
                                     element_counter -= 1
+                        bracket_counter = value_list.count("[")
+                        while(bracket_counter != 0):
+                            initial_bracket = value_list.index("[")
+                            final_bracket = value_list.index("]")
+                            for i in range((initial_bracket + 1), (final_bracket - 1)):
+                                value_list[(i + 1):(i + 1)] = '|'
+                            bracket_counter -= 1
+                            value_list[initial_bracket] = '('
+                            final_bracket = value_list.index("]")
+                            value_list[final_bracket] = ')'
                         print(value_list)
+                        value_list[0:0] = '('
+                        value_list[len(value_list):len(value_list)] = ')'
                         self.regular_expressions[definition] = value_list
-        
-        #print(self.regular_expressions)
